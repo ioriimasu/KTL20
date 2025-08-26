@@ -1,0 +1,27 @@
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+const server = http.createServer((req, res) => {
+  // ...existing routing/static serve logic...
+  const filePath = /* compute file path */;
+  const contentType = /* compute content-type */;
+
+  fs.readFile(filePath, (err, content) => {
+    if (err) {
+      res.statusCode = 404;
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.end('Not found');
+      return;
+    }
+    res.statusCode = 200;
+    // defensive fallback if contentType is undefined
+    const ct = contentType || 'application/octet-stream';
+    res.setHeader('Content-Type', ct);
+    res.end(content, 'utf-8');
+  });
+});
+
+server.listen(process.env.PORT || 3000, () => {
+  console.log('Server running on port', process.env.PORT || 3000);
+});

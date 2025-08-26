@@ -1,0 +1,26 @@
+// ensure router provides a single source of truth for route helpers
+function getRoute() {
+  // existing logic to determine route (keeps original implementation)
+  // ...existing code...
+  // example fallback (retain your original implementation)
+  const path = (location.pathname || "/").replace(/\/+$/, "") || "/";
+  return path;
+}
+
+function updateActiveLink(route) {
+  // existing implementation to set active nav link
+  // ...existing code...
+  try {
+    const links = document.querySelectorAll('a[data-route]');
+    links.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === route);
+    });
+  } catch (err) {
+    // silent fail if DOM not ready
+  }
+}
+
+// expose via global so other scripts (non-module) can call it
+window.KTL = window.KTL || {};
+window.KTL.getRoute = getRoute;
+window.KTL.updateActiveLink = updateActiveLink;

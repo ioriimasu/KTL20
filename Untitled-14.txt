@@ -1,0 +1,6 @@
+<!-- scripts ordered so config/router load before main -->
+  <script defer src="scripts/config.js"></script>
+  <script defer src="scripts/api.js"></script>
+  <script defer src="scripts/news.js"></script>
+  <script defer src="scripts/router.js"></script>
+  <script defer src="scripts/main.js"></script>
