@@ -1,0 +1,10 @@
+fs.readFile(filePath, (err, content) => {
+    if (err) {
+      // ...existing code...
+    } else {
+      res.statusCode = 200;
+      const ct = contentType || 'application/octet-stream';
+      res.setHeader('Content-Type', ct);
+      res.end(content, 'utf-8');
+    }
+  });
