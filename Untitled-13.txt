@@ -1,0 +1,79 @@
+// remove local duplicates of getRoute/updateActiveLink and call router's functions instead
+// use window.KTL.getRoute() and window.KTL.updateActiveLink()
+
+function ensureStatusElement(form) {
+  let status = form.querySelector('.status');
+  if (!status) {
+    // try page-level status
+    status = document.querySelector('.status');
+  }
+  if (!status) {
+    status = document.createElement('div');
+    status.className = 'status';
+    status.setAttribute('aria-live', 'polite');
+    form.appendChild(status);
+  }
+  return status;
+}
+
+async function handleFormSubmitEnhanced(e, {endpoint, mailto}) {
+  e.preventDefault();
+  const form = e.target;
+  const status = ensureStatusElement(form);
+
+  if (!validateForm(form, status)) return;
+
+  // ...existing submission logic...
+  try {
+    status.textContent = 'Sending…';
+    const data = new FormData(form);
+    // example: POST to endpoint
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      body: data,
+    });
+    if (!res.ok) throw new Error('Network response was not ok');
+    status.textContent = 'Message sent. Thank you!';
+    form.reset();
+  } catch (err) {
+    status.textContent = 'An error occurred. Please try again later.';
+    console.error(err);
+  }
+}
+
+async function handleFormSubmit(e, {endpoint, mailto}) {
+  e.preventDefault();
+  const form = e.target;
+  const status = ensureStatusElement(form);
+
+  if (!validateForm(form, status)) return;
+
+  // simple fallback submit or mailto flow
+  try {
+    status.textContent = 'Sending…';
+    const data = new FormData(form);
+    const res = await fetch(endpoint, { method: 'POST', body: data });
+    if (!res.ok) throw new Error('Submit failed');
+    status.textContent = 'Thanks — we received your message.';
+    form.reset();
+  } catch (err) {
+    status.textContent = 'Failed to send message.';
+    console.error(err);
+  }
+}
+
+// On initial load, use router helpers from router.js
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    const route = (window.KTL && window.KTL.getRoute) ? window.KTL.getRoute() : '/';
+    if (window.KTL && window.KTL.updateActiveLink) window.KTL.updateActiveLink(route);
+  } catch (e) {
+    console.warn('Router helpers not available yet', e);
+  }
+
+  // bind forms to handlers
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => handleFormSubmitEnhanced(e, { endpoint: '/api/contact' }));
+  }
+});
