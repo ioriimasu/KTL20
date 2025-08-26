@@ -1,0 +1,1 @@
+   <div className="text-sm text-gray-600">© {new Date().getFullYear()} Kattali Textile Ltd</div>

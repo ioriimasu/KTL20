@@ -1,0 +1,1 @@
+ <div className="container-wide mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">

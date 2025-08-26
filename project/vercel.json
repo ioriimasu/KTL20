@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "next.config.js", "use": "@vercel/next" }
+  ],
+  "routes": [],
+  "div": {
+    "className": "mt-6 flex gap-3 order-first lg:order-last justify-center lg:justify-end"
+  },
+  "a": {
+    "href": "/contact",
+    "className": "inline-block px-4 py-2 rounded border border-gray-300 text-gray-800",
+    "text": "Contact"
+  },
+  "Image": {
+    "src": "/images/ktl/hero.png",
+    "alt": "Textile products",
+    "width": 680,
+    "height": 520,
+    "className": "rounded shadow-xl"
+  }
+}
